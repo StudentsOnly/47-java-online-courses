@@ -1,11 +1,12 @@
 @startuml
 ' Define the interface
 interface OnlineCourse {
-    + void enrollStudent(student Student)
-    + void displayCourseDetails()
+        + <T extends Student> boolean enrollStudent(T student);
+        + <T extends Student> boolean enrollStudentS(Collection<T> students);
+        + default void displayCourseDetails() {this.toString();};
 }
 
-' Define the Student class with a note
+' Define the org.digitalcareerinstitute.Student class with a note
 class Student {
     + String name
 }
@@ -20,23 +21,26 @@ class ProgrammingCourse implements OnlineCourse {
     - String courseName
     - String instructorName
     - List<Student> students
-    + void enrollStudent(student Student)
-    + void displayCourseDetails()
+    + <T extends Student> boolean enrollStudent(T student)
+    + <T extends Student> boolean enrollStudentS(Collection<T> students);
 }
 
 class MathCourse implements OnlineCourse {
     - String courseName
     - String instructorName
     - List<Student> students
-    + void enrollStudent(student: Student)
-    + void displayCourseDetails()
+    + <T extends Student> boolean enrollStudent(T student)
+    + <T extends Student> boolean enrollStudentS(Collection<T> students);
 }
 
 ' Define the CourseManager class
 class CourseManager {
-    - List<OnlineCourse> onlineCourses
-    + void addCourse(OnlineCourse onlineCourse)
-    + void enrollStudent(OnlineCourse onlineCourse, Student student)
+    - final List<OnlineCourse> onlineCourses
+    - final List<Student> students;
+    + public CourseManager()
+    + boolean addCourse(String type, String courseName, String instructorName)
+    + boolean enrollStudent(String courseName, String studentName)
+    + displayCourseDetails(String courseName)
 }
 
 ' Define relationships between the classes and interface
