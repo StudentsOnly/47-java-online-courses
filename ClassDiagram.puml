@@ -1,0 +1,50 @@
+@startuml
+' Define the interface
+interface OnlineCourse {
+    + void enrollStudent(student Student)
+    + void displayCourseDetails()
+}
+
+' Define the Student class with a note
+class Student {
+    + String name
+}
+
+note top of Student
+    <<record>>
+    Immutable data class with public fields.
+end note
+
+' Define classes that implement the OnlineCourse interface
+class ProgrammingCourse implements OnlineCourse {
+    - String courseName
+    - String instructorName
+    - List<Student> students
+    + void enrollStudent(student Student)
+    + void displayCourseDetails()
+}
+
+class MathCourse implements OnlineCourse {
+    - String courseName
+    - String instructorName
+    - List<Student> students
+    + void enrollStudent(student: Student)
+    + void displayCourseDetails()
+}
+
+' Define the CourseManager class
+class CourseManager {
+    - List<OnlineCourse> onlineCourses
+    + void addCourse(OnlineCourse onlineCourse)
+    + void enrollStudent(OnlineCourse onlineCourse, Student student)
+}
+
+' Define relationships between the classes and interface
+Student --> ProgrammingCourse : enrolled in
+Student --> MathCourse : enrolled in
+' ProgrammingCourse --> OnlineCourse
+' MathCourse --> OnlineCourse
+CourseManager --> OnlineCourse : manages
+CourseManager --> Student : enrolls
+
+@enduml
