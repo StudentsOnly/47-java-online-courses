@@ -9,31 +9,42 @@ public class CourseManager {
     }
 
     public void addCourse(OnlineCourse course) {
+        if (course == null) {
+            throw new IllegalArgumentException("Course cannot be null.");
+        }
         courses.add(course);
-        System.out.println("Course "+ course.getCourseName() + " added to the manager.");
+        System.out.println("Course " + course.getCourseName() + " added to the manager.");
     }
 
     public void enrollStudentInCourse(String courseName, String studentName) {
+        if (courseName == null || courseName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Course name cannot be null or empty.");
+        }
+        if (studentName == null || studentName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Student name cannot be null or empty.");
+        }
+
+        boolean courseFound = false;
         for (OnlineCourse course : courses) {
-            if (course instanceof ProgrammingCourse) {
-                ProgrammingCourse programmingCourse = (ProgrammingCourse) course;
-                if (programmingCourse.getCourseName().equalsIgnoreCase(courseName)) {
-                    programmingCourse.enrollStudent(studentName);
-                    return;
-                }
-            } else if (course instanceof MathCourse) {
-                MathCourse mathCourse = (MathCourse) course;
-                if (mathCourse.getCourseName().equalsIgnoreCase(courseName)) {
-                    mathCourse.enrollStudent(studentName);
-                    return;
-                }
+            if (course.getCourseName().equalsIgnoreCase(courseName)) {
+                course.enrollStudent(studentName);
+                courseFound = true;
+                break;
             }
         }
-        System.out.println("Course not found.");
+
+        if (!courseFound) {
+            System.out.println("Course not found.");
+        }
     }
 
     public void displayAllCourses() {
-            System.out.println();
+        if (courses.isEmpty()) {
+            System.out.println("No courses available.");
+            return;
+        }
+
+        System.out.println("All Courses:");
         for (OnlineCourse course : courses) {
             course.displayCourseDetails();
             System.out.println();
